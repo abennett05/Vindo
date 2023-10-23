@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<script type="module" src="main.js"></script>
+<html>
+    <head> 
+        <title>Enter A VIN</title>
+        <style>
+            /* Center the input box */
+            input {
+                display: block;
+                margin: 0 auto;
+            }
+            button {
+                display: block;
+                margin: 0 auto;
+            }
+        </style>
+    </head>
+    <body>
+        <input id="vinput" type="text" min="0" max="99999999999999999" maxlength="17" placeholder="VIN#">
+        <button onclick="fetchInfo()"></button>
+    </body>
+</html>
