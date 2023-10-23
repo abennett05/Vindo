@@ -1,5 +1,5 @@
-import { OpenAI } from 'Vindo/node_modules/openai';
-import { PDFExtract } from 'Vindo/node_mules/pdf.js-extract'
+import { OpenAI } from '/Vindo/node_modules/openai';
+import { PDFExtract } from '/Vindo/node_mules/pdf.js-extract'
 
 var openai = new OpenAI({
     apiKey: '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',
