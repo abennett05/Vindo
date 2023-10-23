@@ -1,10 +1,5 @@
 import { OpenAI } from 'openai';
 import { PDFExtract } from 'pdf.js-extract'
-import { CORS } from 'cors';
-
-var cors = new CORS({
-    origin: "https://github.com/",
-})
 
 var openai = new OpenAI({
     apiKey: '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',
