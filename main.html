@@ -25,7 +25,7 @@
         const data = document.getElementById("vinput").value;
 
         try {
-                const response = await fetch('/processData', {
+                const response = await fetch('http://localhost:3000/parseData', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'text/plain' // Specify plain text content type
@@ -33,7 +33,7 @@
                     body: data // Send the raw string as the body of the request
                 });
                 const result = await response.text(); // Parse response as text
-                document.getElementById('response').textContent = result;
+                console.log("Received: "+result);
         } catch (error) {
                 console.error(error);
         }

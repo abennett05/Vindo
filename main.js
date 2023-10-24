@@ -49,15 +49,17 @@ console.log('running. . .');*/
 
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 const hostname = '127.0.0.1';
 const port = 3000;
 
 app.use(express.text());
+app.use(cors());
 
 app.post('/parseData', (req, res) => {
-    console.log(`Received: ${req.body}`);
-    res.send(res*res);
+    console.log(`Received ${req.body}`);
+    res.send(String(parseInt(req.body) * 2));
 });
 
 app.listen(port, hostname, () => {
