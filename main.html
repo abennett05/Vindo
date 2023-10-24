@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<script type="module" src="https://abennett05.github.io/Vindo/main.js"></script>
+<script>
+    function fetchInfo(){
+        console.log(document.getElementById("vinput").value);
+    }
+</script>
 <html>
     <head> 
-        <title>Enter A VIN</title>
+        <title>Vindo</title>
         <style>
             /* Center the input box */
             input {
@@ -16,7 +20,7 @@
         </style>
     </head>
     <body>
-        <input id="vinput" type="text" min="0" max="99999999999999999" maxlength="17" placeholder="VIN#">
+        <input id="vinput" type="text" maxlength="17" placeholder="Enter a VIN#">
         <button onclick="fetchInfo()"></button>
     </body>
 </html>
