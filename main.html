@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<script src="https://abennett05.github.io/Vindo/node_modules/openai/index.js"></script>
-<script src="https://abennett05.github.io/Vindo/node_modules/pdf.js-extract/lib/index.js"></script>
-<script type="module" src="https://abennett05.github.io/Vindo/main.mjs"></script>
 <html>
     <head> 
         <title>Vindo</title>
@@ -19,6 +16,26 @@
     </head>
     <body>
         <input id="vinput" type="text" maxlength="17" placeholder="Enter a VIN#">
-        <button onclick="fetchInfo()"></button>
+        <butto onclick="sendData()"></button>
     </body>
 </html>
+
+<script>
+    async function sendData(){
+        const data = document.getElementById("vinput").value;
+
+        try {
+                const response = await fetch('/processData', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain' // Specify plain text content type
+                    },
+                    body: data // Send the raw string as the body of the request
+                });
+                const result = await response.text(); // Parse response as text
+                document.getElementById('response').textContent = result;
+        } catch (error) {
+                console.error(error);
+        }
+    }
+</script>

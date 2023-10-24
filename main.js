@@ -1,4 +1,4 @@
-import { OpenAI } from 'openai';
+/*import { OpenAI } from 'openai';
 import { PDFExtract } from 'pdf.js-extract'
 
 var openai = new OpenAI({
@@ -45,4 +45,21 @@ function fetchInfo(){
     })
 }
 
-console.log('running. . .');
+console.log('running. . .');*/
+
+const express = require('express');
+const app = express();
+
+const hostname = '127.0.0.1';
+const port = 3000;
+
+app.use(express.text());
+
+app.post('/parseData', (req, res) => {
+    console.log(`Received: ${req.body}`);
+    res.send(res*res);
+});
+
+app.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+});
