@@ -9,6 +9,7 @@
                 text-align: center;
                 font-family: 'Courier New', Courier, monospace;
                 letter-spacing: 10px;
+                color: rgb(0, 96, 198);
                 /* Size + Position */
                 position: fixed;
                 top: 50%;
@@ -21,7 +22,7 @@
                 border-radius: 10px;
                 border: 5px solid rgb(48, 206, 255);
                 /* Transition */
-                transition: 0.5s;
+                transition: 0.5s ease-out;
             }
             input:focus {
                 cursor: none;
@@ -29,9 +30,9 @@
                 outline: none;
                 border-radius: 10px;
                 border: 10px solid rgb(0, 96, 198);
+                background-color: rgb(232, 250, 255);
             }
-            button {
-                position: fixed;
+            #submitButton {
                 /* Button */
                 background-color: rgb(48, 206, 255);
                 text-align: center;
@@ -43,37 +44,82 @@
                 height: 40px;
                 width: 40px;
                 /* Position */
-                display: inline-block;
-                margin-left: 56%;
-                margin-top: -15px;
+                position: fixed;
+                display: block;
+                margin-left: 55%;
+                top: 48%;
+                transform-origin: center;
                 /* Transition */
                 transition: 0.1s;
             }
-            button:hover{
+            #submitButton:hover{
                 background-color: rgb(0, 96, 198);
                 border: 5px solid rgb(48, 206, 255);
-                height: 50px;
-                width: 50px;
+                transform: scale(125%)
             }
-            div {
+            #inputPhase {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
+                overflow: hidden;
             }
-            h2{
-                line-height: 0.95;
-                overflow: scroll;
+            #inputTitle {
+                position: fixed;
                 font-family: 'Courier New', Courier, monospace;
+                text-align: center;
+                padding-bottom: 125px;
+            }
+
+            #voutput {
+                display: none;
+                position: fixed;
+                font-family: 'Courier New', Courier, monospace;
+                padding-bottom: 125px;
+            }
+            #outputPhase{
+                display:none;
+            }
+
+            #infoContainer{
+            display: block;
+            border: 5px solid rgb(48, 206, 255);
+            border-radius: 10px;
+            }
+            #infoText{
+                padding: 10px;
+                padding-left: 20px;
+            }
+            #featureContainer{
+                margin-top: 10px;
+                padding-left: 5px;
+                display:block;
+                border: 5px solid rgb(48, 206, 255);
+                overflow-y: scroll;
             }
         </style>
     </head>
     <div id="inputPhase">
+        <h1 id="inputTitle">Enter VIN</h1>
         <input id="vinput" type="text" maxlength="17" placeholder="#################">
-        <button onclick="sendData()">>></button>
+        <button id="submitButton" onclick="sendData()">🚗</button>
     </div>
+    <h2 id="voutput"></h2>
     <div id="outputPhase">
-        <h2 id="voutput"></h2>
+        <div>
+            <div>
+                <h1 id="vehicleName" style="text-align: center; padding: 10px;">VEHICLE NAME</h1>
+                <div id="infoContainer">
+                    <h2 id="engine">ENGINE</h2>
+                    <h2 id="trans">TRANSMISSION</h2>
+                    <h2 id="drivetrain">DRIVETRAIN</h2>
+                    <h2 id="VIN">VIN</h2>
+                </div>
+            </div>
+            <div id="featureContainer">
+                <h3 id="featureText"></h3>
+            </div>
+        </div>
     </div>
 </html>
 
@@ -97,7 +143,7 @@
                 const result = await response.text(); // Parse response as text
                 console.log(result);
                 loading = false;
-                outputElem.innerText = result;
+                parseOutput(result);
         } catch (error) {
                 console.log('Server is currently offline or not responding.')
                 loading = false;
@@ -107,6 +153,7 @@
 
     async function loadAnimation(){
         const outputElem = document.getElementById("voutput");
+        outputElem.style.display = "block";
         outputElem.innerText = "LOADING";
         let count = 0;
         while(loading){
@@ -119,5 +166,31 @@
                 count = 0;
             }
         }
+    }
+
+    function parseOutput(output){
+        document.getElementById("voutput").style.display = "none";
+        let arr = output.split("\n");
+        
+        let name = document.getElementById("vehicleName");
+        let engine = document.getElementById("engine");
+        let trans = document.getElementById("trans");
+        let drivetrain = document.getElementById("drivetrain");
+        let VIN = document.getElementById("VIN");
+        let features = document.getElementById("featureText");
+
+        name.innerText = arr[0].slice(6);
+        engine.innerText = arr[1];
+        trans.innerText = arr[2];
+        drivetrain.innerText = arr[3];
+        VIN.innerText = arr[4];
+        let total = '';
+
+        for (let i=6; i<arr.length; i++){
+            total += arr[i] + "\n";
+        }
+        features.innerText = total;
+
+        document.getElementById("outputPhase").style.display = "block";
     }
 </script>

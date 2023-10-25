@@ -37,8 +37,11 @@ async function fetchVIN(vin){
     const uInt8Array = new Uint8Array(buffer);
     let VINData = '';
 
-    fs.writeFileSync(`./database/${vin}.pdf`, uInt8Array);
-    console.log('PDF saved');
+    if (! fs.existsSync(`./database/${vin}.pdf`)){
+        fs.writeFileSync(`./database/${vin}.pdf`, uInt8Array);
+        console.log('PDF saved');
+    }
+    else { console.log('PDF already exists');}
     let PDFData = await parsePDF(vin);
     const getResponse = async () => {
         const response = await openai.chat.completions.create({
@@ -46,7 +49,31 @@ async function fetchVIN(vin){
             messages: [
                 {
                     role: 'user',
-                    content: `State the Name of the Vehicle, Engine, Transmission, and Drivetrain (whether it is RWD, FWD, or AWD) and then return a categorized list with categories (1. Safety Features, 2. Interior Features, 3. Exterior Features, 4. Performance Features, 5. Connectivity and Entertainment Features, and 6. Optional Features) for this Vehicle Build Sheet: 5${PDFData}`,
+                    content: `Collect the following data from this build sheet: ${PDFData} and format in the format I provide
+                    Name (no prefix like Name: just list the Name of the Vehicle)
+                    Engine: engine
+                    Transmission: transmission
+                    Drivetrain: drivetrain
+                    VIN: vin
+                    Safety Features
+                    -safety features that you find
+                    -list each one on a new line
+                    Interior Features
+                    -interior features that you find
+                    -list each one on a new line
+                    Exterior Features
+                    -exterior features that you find
+                    -list each one on a new line
+                    Performance Features
+                    -performance features that you find
+                    -list each one on a new line
+                    Connectivity and Entertainment Features
+                    -connectivity and entertainment features that you find
+                    -list each one on a new line
+                    Optional Features
+                    -optional features that you find
+                    -list each one on a new line`,
+                    //content: `State the Name of the Vehicle, Engine, Transmission, and Drivetrain (whether it is RWD, FWD, or AWD) and then return a categorized list with categories (1. Safety Features, 2. Interior Features, 3. Exterior Features, 4. Performance Features, 5. Connectivity and Entertainment Features, and 6. Optional Features) for this Vehicle Build Sheet: ${PDFData}`,
                 },
             ],
         });
