@@ -12,7 +12,8 @@ const openai = new OpenAI.OpenAI({
 });
 
 
-const hostname = '127.0.0.1';
+//const hostname = '127.0.0.1';
+const hostname = '172.19.56.86';
 const port = 3000;
 
 app.use(express.text());
