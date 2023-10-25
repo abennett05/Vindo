@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head> 
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
         <title>Vindo</title>
         <style>
             input {
@@ -134,7 +133,7 @@
         loading = true;
         loadAnimation();
         try {
-                const response = await fetch('http://172.19.56.86:3000/parseData', {
+                const response = await fetch('http://localhost:3000/parseData', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'text/plain' // Specify plain text content type
