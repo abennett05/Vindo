@@ -3,27 +3,89 @@
     <head> 
         <title>Vindo</title>
         <style>
-            /* Center the input box */
             input {
-                display: block;
-                margin: 0 auto;
+                /* Text */
+                font-size: 25px;
+                text-align: center;
+                font-family: 'Courier New', Courier, monospace;
+                letter-spacing: 10px;
+                /* Size + Position */
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                width: 50%;
+                height: 45px;
+                transform: translate(-50%, -50%);
+                margin-right: 10px;
+                /* Border */
+                border-radius: 10px;
+                border: 5px solid rgb(48, 206, 255);
+                /* Transition */
+                transition: 0.5s;
+            }
+            input:focus {
+                cursor: none;
+                caret-color: transparent;
+                outline: none;
+                border-radius: 10px;
+                border: 10px solid rgb(0, 96, 198);
             }
             button {
-                display: block;
-                margin: 0 auto;
+                position: fixed;
+                /* Button */
+                background-color: rgb(48, 206, 255);
+                text-align: center;
+                font-size: 12px;
+                color: white;
+                border-radius: 50%;
+                border: 5px solid rgb(0, 96, 198);
+                /* Size */
+                height: 40px;
+                width: 40px;
+                /* Position */
+                display: inline-block;
+                margin-left: 56%;
+                margin-top: -15px;
+                /* Transition */
+                transition: 0.1s;
+            }
+            button:hover{
+                background-color: rgb(0, 96, 198);
+                border: 5px solid rgb(48, 206, 255);
+                height: 50px;
+                width: 50px;
+            }
+            div {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            h2{
+                line-height: 0.95;
+                overflow: scroll;
+                font-family: 'Courier New', Courier, monospace;
             }
         </style>
     </head>
-    <body>
-        <input id="vinput" type="text" maxlength="17" placeholder="Enter a VIN#">
-        <button onclick="sendData()"></button>
-    </body>
+    <div id="inputPhase">
+        <input id="vinput" type="text" maxlength="17" placeholder="#################">
+        <button onclick="sendData()">>></button>
+    </div>
+    <div id="outputPhase">
+        <h2 id="voutput"></h2>
+    </div>
 </html>
 
 <script>
+    let loading = false;
     async function sendData(){
         const data = document.getElementById("vinput").value;
-
+        const inputPhase = document.getElementById("inputPhase");
+        const outputElem = document.getElementById("voutput");
+        inputPhase.style.display = "none";
+        loading = true;
+        loadAnimation();
         try {
                 const response = await fetch('http://localhost:3000/parseData', {
                     method: 'POST',
@@ -33,9 +95,29 @@
                     body: data // Send the raw string as the body of the request
                 });
                 const result = await response.text(); // Parse response as text
-                console.log("Received: "+result);
+                console.log(result);
+                loading = false;
+                outputElem.innerText = result;
         } catch (error) {
-                console.error(error);
+                console.log('Server is currently offline or not responding.')
+                loading = false;
+                outputElem.innerText = "Server is currently offline or not responding.";
+        }
+    }
+
+    async function loadAnimation(){
+        const outputElem = document.getElementById("voutput");
+        outputElem.innerText = "LOADING";
+        let count = 0;
+        while(loading){
+            await new Promise(r => setTimeout(r, 500));
+            if (!loading) break;
+            count++;
+            outputElem.innerText += ".";
+            if (count > 3){
+                outputElem.innerText = "LOADING";
+                count = 0;
+            }
         }
     }
 </script>
