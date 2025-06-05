@@ -5,7 +5,7 @@ const fs = require('fs');
 const PDFParser = require('pdf-parse');
 
 const OpenAI = require('openai');
-const openai_key = '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';
+const openai_key = 'shhhhh';
 
 const openai = new OpenAI.OpenAI({
     apiKey: openai_key,
